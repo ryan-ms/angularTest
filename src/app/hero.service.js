@@ -10,14 +10,22 @@ var mock_heroes_1 = require("./mock-heroes");
 var HeroService = (function () {
     function HeroService() {
     }
-    HeroService.prototype.getHeroes = function () {
+    HeroService.prototype.getHeroes2 = function () {
         return Promise.resolve(mock_heroes_1.HEROES);
     };
+    HeroService.prototype.getHeroes = function () {
+        return mock_heroes_1.HEROES;
+    };
     HeroService.prototype.getHeroSlowly = function () {
+        // return Promise.resolve(this.getHeroes2());
         var _this = this;
         return new Promise(function (resolve) {
             setTimeout(function () { return resolve(_this.getHeroes()); }, 2000);
         });
+    };
+    HeroService.prototype.getHero = function (id) {
+        return this.getHeroes2()
+            .then(function (heroes) { return heroes.find(function (hero) { return hero.id === id; }); });
     };
     return HeroService;
 }());
